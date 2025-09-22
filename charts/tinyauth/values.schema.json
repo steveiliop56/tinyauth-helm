@@ -248,6 +248,19 @@
                             "default": "",
                             "type": "string"
                         },
+                        "secretSecretRef": {
+                            "type": "object",
+                            "properties": {
+                                "key": {
+                                    "default": "",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "default": "",
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "sessionExpiry": {
                             "default": 86400,
                             "type": "integer"
@@ -280,6 +293,19 @@
                         "clientSecretFile": {
                             "default": "",
                             "type": "string"
+                        },
+                        "clientSecretSecretRef": {
+                            "type": "object",
+                            "properties": {
+                                "key": {
+                                    "default": "",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "default": "",
+                                    "type": "string"
+                                }
+                            }
                         },
                         "name": {
                             "default": "",
@@ -317,6 +343,19 @@
                         "clientSecretFile": {
                             "default": "",
                             "type": "string"
+                        },
+                        "clientSecretSecretRef": {
+                            "type": "object",
+                            "properties": {
+                                "key": {
+                                    "default": "",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "default": "",
+                                    "type": "string"
+                                }
+                            }
                         }
                     }
                 },
@@ -334,6 +373,19 @@
                         "clientSecretFile": {
                             "default": "",
                             "type": "string"
+                        },
+                        "clientSecretSecretRef": {
+                            "type": "object",
+                            "properties": {
+                                "key": {
+                                    "default": "",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "default": "",
+                                    "type": "string"
+                                }
+                            }
                         }
                     }
                 },
@@ -355,6 +407,19 @@
                         "bindPassword": {
                             "default": "",
                             "type": "string"
+                        },
+                        "bindPasswordSecretRef": {
+                            "type": "object",
+                            "properties": {
+                                "key": {
+                                    "default": "",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "default": "",
+                                    "type": "string"
+                                }
+                            }
                         },
                         "insecure": {
                             "default": false,

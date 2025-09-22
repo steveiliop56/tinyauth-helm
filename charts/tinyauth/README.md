@@ -59,6 +59,8 @@ A Helm chart for Kubernetes
 | tinyauth.general.port | int | `3000` |  |
 | tinyauth.general.secret | string | `""` |  |
 | tinyauth.general.secretFile | string | `""` |  |
+| tinyauth.general.secretSecretRef.key | string | `""` |  |
+| tinyauth.general.secretSecretRef.name | string | `""` |  |
 | tinyauth.general.sessionExpiry | int | `86400` |  |
 | tinyauth.general.users | string | `""` |  |
 | tinyauth.general.usersFile | string | `""` |  |
@@ -66,6 +68,8 @@ A Helm chart for Kubernetes
 | tinyauth.generic.clientId | string | `""` |  |
 | tinyauth.generic.clientSecret | string | `""` |  |
 | tinyauth.generic.clientSecretFile | string | `""` |  |
+| tinyauth.generic.clientSecretSecretRef.key | string | `""` |  |
+| tinyauth.generic.clientSecretSecretRef.name | string | `""` |  |
 | tinyauth.generic.name | string | `""` |  |
 | tinyauth.generic.scopes | string | `""` |  |
 | tinyauth.generic.skipSsl | bool | `false` |  |
@@ -74,13 +78,19 @@ A Helm chart for Kubernetes
 | tinyauth.github.clientId | string | `""` |  |
 | tinyauth.github.clientSecret | string | `""` |  |
 | tinyauth.github.clientSecretFile | string | `""` |  |
+| tinyauth.github.clientSecretSecretRef.key | string | `""` |  |
+| tinyauth.github.clientSecretSecretRef.name | string | `""` |  |
 | tinyauth.google.clientId | string | `""` |  |
 | tinyauth.google.clientSecret | string | `""` |  |
 | tinyauth.google.clientSecretFile | string | `""` |  |
+| tinyauth.google.clientSecretSecretRef.key | string | `""` |  |
+| tinyauth.google.clientSecretSecretRef.name | string | `""` |  |
 | tinyauth.ldap.address | string | `""` |  |
 | tinyauth.ldap.baseDn | string | `""` |  |
 | tinyauth.ldap.bindDn | string | `""` |  |
 | tinyauth.ldap.bindPassword | string | `""` |  |
+| tinyauth.ldap.bindPasswordSecretRef.key | string | `""` |  |
+| tinyauth.ldap.bindPasswordSecretRef.name | string | `""` |  |
 | tinyauth.ldap.insecure | bool | `false` |  |
 | tinyauth.ldap.searchFilter | string | `"(uid=%s)"` |  |
 | tolerations | list | `[]` |  |

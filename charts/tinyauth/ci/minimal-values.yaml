@@ -1,16 +1,5 @@
-# Minimal configuration with only required values
 tinyauth:
   general:
     appUrl: "http://minimal-test.local"
     secret: "minimal-test-secret"
     users: "test:test123"
-
-replicaCount: 1
-
-resources:
-  requests:
-    memory: "32Mi"
-    cpu: "25m"
-  limits:
-    memory: "64Mi"
-    cpu: "50m"

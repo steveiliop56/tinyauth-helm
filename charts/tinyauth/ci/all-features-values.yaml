@@ -1,10 +1,9 @@
-# Comprehensive test configuration with all optional features enabled
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: steveiliop56/tinyauth
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "v3.2.6"
 
 serviceAccount:
   create: true
@@ -14,8 +13,7 @@ serviceAccount:
   name: ""
 
 podAnnotations:
-  prometheus.io/scrape: "true"
-  prometheus.io/port: "3000"
+  app.kubernetes.io/component: "auth-server"
 
 podLabels:
   app.kubernetes.io/component: "auth-server"
@@ -26,7 +24,7 @@ podSecurityContext:
 securityContext:
   capabilities:
     drop:
-    - ALL
+      - ALL
   readOnlyRootFilesystem: false
   runAsNonRoot: true
   runAsUser: 1000
@@ -91,18 +89,6 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
-    - secretName: tinyauth-test-tls
-      hosts:
-        - tinyauth-test.local
-
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 200m
-    memory: 256Mi
 
 livenessProbe:
   httpGet:
@@ -120,40 +106,7 @@ readinessProbe:
 
 autoscaling:
   enabled: true
-  minReplicas: 2
-  maxReplicas: 5
+  minReplicas: 1
+  maxReplicas: 1
   targetCPUUtilizationPercentage: 70
   targetMemoryUtilizationPercentage: 80
-
-volumes:
-  - name: config
-    configMap:
-      name: tinyauth-config
-      optional: true
-
-volumeMounts:
-  - name: config
-    mountPath: "/etc/tinyauth"
-    readOnly: true
-
-nodeSelector:
-  kubernetes.io/os: linux
-
-tolerations:
-  - key: "example.com/special"
-    operator: "Equal"
-    value: "true"
-    effect: "NoSchedule"
-
-affinity:
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - tinyauth
-          topologyKey: kubernetes.io/hostname
