@@ -1,0 +1,255 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tinyauth.fullname" . }}
+  labels:
+    {{- include "tinyauth.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "tinyauth.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "tinyauth.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "tinyauth.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.tinyauth.general.port }}
+              protocol: TCP
+          env:
+            {{- if .Values.tinyauth.general.port }}
+            - name: PORT
+              value: {{ .Values.tinyauth.general.port | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.address }}
+            - name: ADDRESS
+              value: {{ .Values.tinyauth.general.address | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.appUrl }}
+            - name: APP_URL
+              value: {{ .Values.tinyauth.general.appUrl | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.secretSecretRef.name }}
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.tinyauth.general.secretSecretRef.name }}
+                  key: {{ .Values.tinyauth.general.secretSecretRef.key }}
+            {{- else if .Values.tinyauth.general.secret }}
+            - name: SECRET
+              value: {{ .Values.tinyauth.general.secret | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.secretFile }}
+            - name: SECRET_FILE
+              value: {{ .Values.tinyauth.general.secretFile | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.users }}
+            - name: USERS
+              value: {{ .Values.tinyauth.general.users | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.usersFile }}
+            - name: USERS_FILE
+              value: {{ .Values.tinyauth.general.usersFile | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.cookieSecure }}
+            - name: COOKIE_SECURE
+              value: {{ .Values.tinyauth.general.cookieSecure | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.disableContinue }}
+            - name: DISABLE_CONTINUE
+              value: {{ .Values.tinyauth.general.disableContinue | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.oauthWhitelist }}
+            - name: OAUTH_WHITELIST
+              value: {{ .Values.tinyauth.general.oauthWhitelist | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.sessionExpiry }}
+            - name: SESSION_EXPIRY
+              value: {{ .Values.tinyauth.general.sessionExpiry | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.logLevel }}
+            - name: LOG_LEVEL
+              value: {{ .Values.tinyauth.general.logLevel | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.appTitle }}
+            - name: APP_TITLE
+              value: {{ .Values.tinyauth.general.appTitle | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.loginMaxRetries }}
+            - name: LOGIN_MAX_RETRIES
+              value: {{ .Values.tinyauth.general.loginMaxRetries | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.loginTimeout }}
+            - name: LOGIN_TIMEOUT
+              value: {{ .Values.tinyauth.general.loginTimeout | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.forgotPasswordMessage }}
+            - name: FORGOT_PASSWORD_MESSAGE
+              value: {{ .Values.tinyauth.general.forgotPasswordMessage | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.oauthAutoRedirect }}
+            - name: OAUTH_AUTO_REDIRECT
+              value: {{ .Values.tinyauth.general.oauthAutoRedirect | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.backgroundImage }}
+            - name: BACKGROUND_IMAGE
+              value: {{ .Values.tinyauth.general.backgroundImage | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.github.clientId }}
+            - name: GITHUB_CLIENT_ID
+              value: {{ .Values.tinyauth.github.clientId | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.github.clientSecretSecretRef.name }}
+            - name: GITHUB_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.tinyauth.github.clientSecretSecretRef.name }}
+                  key: {{ .Values.tinyauth.github.clientSecretSecretRef.key }}
+            {{- else if .Values.tinyauth.github.clientSecret }}
+            - name: GITHUB_CLIENT_SECRET
+              value: {{ .Values.tinyauth.github.clientSecret | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.github.clientSecretFile }}
+            - name: GITHUB_CLIENT_SECRET_FILE
+              value: {{ .Values.tinyauth.github.clientSecretFile | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.google.clientId }}
+            - name: GOOGLE_CLIENT_ID
+              value: {{ .Values.tinyauth.google.clientId | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.google.clientSecretSecretRef.name }}
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.tinyauth.google.clientSecretSecretRef.name }}
+                  key: {{ .Values.tinyauth.google.clientSecretSecretRef.key }}
+            {{- else if .Values.tinyauth.google.clientSecret }}
+            - name: GOOGLE_CLIENT_SECRET
+              value: {{ .Values.tinyauth.google.clientSecret | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.google.clientSecretFile }}
+            - name: GOOGLE_CLIENT_SECRET_FILE
+              value: {{ .Values.tinyauth.google.clientSecretFile | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.clientId }}
+            - name: GENERIC_CLIENT_ID
+              value: {{ .Values.tinyauth.generic.clientId | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.clientSecretSecretRef.name }}
+            - name: GENERIC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.tinyauth.generic.clientSecretSecretRef.name }}
+                  key: {{ .Values.tinyauth.generic.clientSecretSecretRef.key }}
+            {{- else if .Values.tinyauth.generic.clientSecret }}
+            - name: GENERIC_CLIENT_SECRET
+              value: {{ .Values.tinyauth.generic.clientSecret | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.clientSecretFile }}
+            - name: GENERIC_CLIENT_SECRET_FILE
+              value: {{ .Values.tinyauth.generic.clientSecretFile | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.authUrl }}
+            - name: GENERIC_AUTH_URL
+              value: {{ .Values.tinyauth.generic.authUrl | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.tokenUrl }}
+            - name: GENERIC_TOKEN_URL
+              value: {{ .Values.tinyauth.generic.tokenUrl | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.userUrl }}
+            - name: GENERIC_USER_URL
+              value: {{ .Values.tinyauth.generic.userUrl | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.scopes }}
+            - name: GENERIC_SCOPES
+              value: {{ .Values.tinyauth.generic.scopes | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.name }}
+            - name: GENERIC_NAME
+              value: {{ .Values.tinyauth.generic.name | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.generic.skipSsl }}
+            - name: GENERIC_SKIP_SSL
+              value: {{ .Values.tinyauth.generic.skipSsl | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.ldap.address }}
+            - name: LDAP_ADDRESS
+              value: {{ .Values.tinyauth.ldap.address | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.ldap.bindDn }}
+            - name: LDAP_BIND_DN
+              value: {{ .Values.tinyauth.ldap.bindDn | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.ldap.bindPasswordSecretRef.name }}
+            - name: LDAP_BIND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.tinyauth.ldap.bindPasswordSecretRef.name }}
+                  key: {{ .Values.tinyauth.ldap.bindPasswordSecretRef.key }}
+            {{- else if .Values.tinyauth.ldap.bindPassword }}
+            - name: LDAP_BIND_PASSWORD
+              value: {{ .Values.tinyauth.ldap.bindPassword | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.ldap.baseDn }}
+            - name: LDAP_BASE_DN
+              value: {{ .Values.tinyauth.ldap.baseDn | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.ldap.insecure }}
+            - name: LDAP_INSECURE
+              value: {{ .Values.tinyauth.ldap.insecure | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.ldap.searchFilter }}
+            - name: LDAP_SEARCH_FILTER
+              value: {{ .Values.tinyauth.ldap.searchFilter | quote }}
+            {{- end }}
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
