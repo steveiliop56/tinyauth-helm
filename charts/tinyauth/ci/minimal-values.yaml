@@ -1,5 +1,0 @@
-tinyauth:
-  general:
-    appUrl: "http://minimal-test.local"
-    secret: "minimal-test-secret"
-    users: "test:test123"
