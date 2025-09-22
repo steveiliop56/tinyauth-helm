@@ -227,6 +227,9 @@ spec:
             - name: LDAP_SEARCH_FILTER
               value: {{ .Values.tinyauth.ldap.searchFilter | quote }}
             {{- end }}
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:

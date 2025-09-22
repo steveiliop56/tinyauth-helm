@@ -1,5 +1,9 @@
 replicaCount: 1
 
+env:
+  - name: CUSTOM_VAR
+    values: "custom-value"
+
 image:
   pullPolicy: IfNotPresent
 
