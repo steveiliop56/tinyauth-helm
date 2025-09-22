@@ -9,24 +9,106 @@
             "type": "object",
             "properties": {
                 "enabled": {
+                    "default": false,
                     "type": "boolean"
                 },
                 "maxReplicas": {
+                    "default": 10,
                     "type": "integer"
                 },
                 "minReplicas": {
+                    "default": 1,
                     "type": "integer"
                 },
                 "targetCPUUtilizationPercentage": {
+                    "default": 80,
                     "type": "integer"
                 },
                 "targetMemoryUtilizationPercentage": {
+                    "default": 80,
                     "type": "integer"
                 }
             }
         },
         "fullnameOverride": {
             "type": "string"
+        },
+        "httpRoute": {
+            "type": "object",
+            "properties": {
+                "annotations": {
+                    "default": {},
+                    "type": "object"
+                },
+                "enabled": {
+                    "default": false,
+                    "type": "boolean"
+                },
+                "hostnames": {
+                    "default": [
+                        "chart-example.local"
+                    ],
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "parentRefs": {
+                    "default": [
+                        {
+                            "name": "my-gateway"
+                        }
+                    ],
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "rules": {
+                    "default": [
+                        {
+                            "matches": [
+                                {
+                                    "path": {
+                                        "type": "Prefix",
+                                        "value": "/"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "matches": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "path": {
+                                            "type": "object",
+                                            "properties": {
+                                                "type": {
+                                                    "type": "string"
+                                                },
+                                                "value": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
         "image": {
             "type": "object",
@@ -36,7 +118,7 @@
                     "type": "string"
                 },
                 "repository": {
-                    "default": "steveiliop56/tinyauth",
+                    "default": "ghcr.io/steveiliop56/tinyauth",
                     "type": "string"
                 },
                 "tag": {
@@ -52,15 +134,29 @@
             "type": "object",
             "properties": {
                 "annotations": {
+                    "default": {},
                     "type": "object"
                 },
                 "className": {
+                    "default": "",
                     "type": "string"
                 },
                 "enabled": {
+                    "default": false,
                     "type": "boolean"
                 },
                 "hosts": {
+                    "default": [
+                        {
+                            "host": "chart-example.local",
+                            "paths": [
+                                {
+                                    "path": "/",
+                                    "pathType": "ImplementationSpecific"
+                                }
+                            ]
+                        }
+                    ],
                     "type": "array",
                     "items": {
                         "type": "object",
@@ -86,11 +182,18 @@
                     }
                 },
                 "tls": {
+                    "default": [],
                     "type": "array"
                 }
             }
         },
         "livenessProbe": {
+            "default": {
+                "httpGet": {
+                    "path": "/api/healthcheck",
+                    "port": "http"
+                }
+            },
             "type": "object",
             "properties": {
                 "httpGet": {
@@ -122,6 +225,12 @@
             "type": "object"
         },
         "readinessProbe": {
+            "default": {
+                "httpGet": {
+                    "path": "/api/healthcheck",
+                    "port": "http"
+                }
+            },
             "type": "object",
             "properties": {
                 "httpGet": {

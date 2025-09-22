@@ -117,18 +117,18 @@ tinyauth:
     searchFilter: "(uid=%s)" # @schema default: "(uid=%s)"
 
 ingress:
-  enabled: false
-  className: ""
-  annotations:
+  enabled: false # @schema default: false
+  className: "" # @schema default: ""
+  annotations: # @schema default: {}
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts:
+  hosts: # @schema default: [{"host": "chart-example.local", "paths": [{"path": "/", "pathType": "ImplementationSpecific"}]}]
     - host: chart-example.local
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: []
+  tls: [] # @schema default: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -146,21 +146,21 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
-livenessProbe:
+livenessProbe: # @schema default: {"httpGet": {"path": "/api/healthcheck", "port": "http"}}
   httpGet:
     path: /api/healthcheck
     port: http
-readinessProbe:
+readinessProbe: # @schema default: {"httpGet": {"path": "/api/healthcheck", "port": "http"}}
   httpGet:
     path: /api/healthcheck
     port: http
 
 autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 80
-  targetMemoryUtilizationPercentage: 80
+  enabled: false # @schema default: false
+  minReplicas: 1 # @schema default: 1
+  maxReplicas: 10 # @schema default: 10
+  targetCPUUtilizationPercentage: 80 # @schema default: 80
+  targetMemoryUtilizationPercentage: 80 # @schema default: 80
 
 # Additional volumes on the output Deployment definition.
 volumes: []
@@ -180,3 +180,16 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+httpRoute:
+  enabled: false # @schema default: false
+  annotations: {} # @schema default: {}
+  parentRefs: # @schema default: [{"name": "my-gateway"}]
+    - name: my-gateway
+  hostnames: # @schema default: ["chart-example.local"]
+    - chart-example.local
+  rules: # @schema default: [{"matches": [{"path": {"type": "Prefix", "value": "/"}}]}]
+    - matches:
+        - path:
+            type: Prefix
+            value: /
