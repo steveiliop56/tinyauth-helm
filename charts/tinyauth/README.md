@@ -14,6 +14,7 @@ A Helm chart for Kubernetes
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` |  |
+| env | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | httpRoute.annotations | object | `{}` |  |
 | httpRoute.enabled | bool | `false` |  |

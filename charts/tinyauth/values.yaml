@@ -193,3 +193,13 @@ httpRoute:
         - path:
             type: Prefix
             value: /
+
+# Additional environment variables for the container
+env: [] # @schema default: []
+# - name: CUSTOM_VAR
+#   value: "custom_value"
+# - name: SECRET_VAR
+#   valueFrom:
+#     secretKeyRef:
+#       name: my-secret
+#       key: secret-key

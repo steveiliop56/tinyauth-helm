@@ -30,6 +30,10 @@
                 }
             }
         },
+        "env": {
+            "default": [],
+            "type": "array"
+        },
         "fullnameOverride": {
             "type": "string"
         },
