@@ -148,11 +148,11 @@ resources:
 
 livenessProbe:
   httpGet:
-    path: /
+    path: /api/healthcheck
     port: http
 readinessProbe:
   httpGet:
-    path: /
+    path: /api/healthcheck
     port: http
 
 autoscaling:
