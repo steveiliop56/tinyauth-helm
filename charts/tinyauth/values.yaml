@@ -5,7 +5,7 @@
 replicaCount: 1 # @schema default: 1
 
 image:
-  repository: steveiliop56/tinyauth # @schema default: "steveiliop56/tinyauth"
+  repository: ghcr.io/steveiliop56/tinyauth # @schema default: "ghcr.io/steveiliop56/tinyauth"
   pullPolicy: IfNotPresent # @schema default: "IfNotPresent"
   # Overrides the image tag whose default is the chart appVersion.
   tag: "" # @schema default: ""

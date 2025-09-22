@@ -1,9 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: steveiliop56/tinyauth
   pullPolicy: IfNotPresent
-  tag: "v3.2.6"
 
 serviceAccount:
   create: true
@@ -38,8 +36,8 @@ tinyauth:
     port: 3000
     address: "0.0.0.0"
     appUrl: "http://tinyauth-test.local"
-    secret: "comprehensive-test-secret-key"
-    users: "admin:password,user1:pass1,user2:pass2"
+    secret: "a7b9c2d4e6f8g1h3i5j7k9l2m4n6o8p1"
+    users: "user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u"
     cookieSecure: false
     disableContinue: false
     oauthWhitelist: "*"
