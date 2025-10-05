@@ -28,12 +28,10 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext:
-  {}
+securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -52,18 +50,13 @@ tinyauth:
     port: 3000 # @schema default: 3000
     address: "0.0.0.0" # @schema default: "0.0.0.0"
     appUrl: "" # @schema default: ""; required: true
-    secret: "" # @schema default: ""; required: true
-    secretFile: "" # @schema default: ""
-    secretSecretRef:
-      name: "" # @schema default: ""
-      key: "" # @schema default: ""
     users: "" # @schema default: ""; required: true
     usersFile: "" # @schema default: ""
-    cookieSecure: false # @schema default: false
+    secureCookie: false # @schema default: false
     disableContinue: false # @schema default: false
     oauthWhitelist: "" # @schema default: ""
     sessionExpiry: 86400 # @schema default: 86400
-    logLevel: 1 # @schema default: 1
+    logLevel: info # @schema default: 1
     appTitle: "" # @schema default: ""
     loginMaxRetries: 5 # @schema default: 5
     loginTimeout: 300 # @schema default: 300
@@ -71,41 +64,46 @@ tinyauth:
     oauthAutoRedirect: "" # @schema default: ""
     backgroundImage: "" # @schema default: ""
 
-  # GitHub OAuth Configuration
-  github:
-    clientId: "" # @schema default: ""
-    clientSecret: "" # @schema default: ""
-    clientSecretFile: "" # @schema default: ""
-    clientSecretSecretRef:
-      name: "" # @schema default: ""
-      key: "" # @schema default: ""
-
-  # Google OAuth Configuration
-  google:
-    clientId: "" # @schema default: ""
-    clientSecret: "" # @schema default: ""
-    clientSecretFile: "" # @schema default: ""
-    clientSecretSecretRef:
-      name: "" # @schema default: ""
-      key: "" # @schema default: ""
-
-  # Generic OAuth Configuration
-  generic:
-    clientId: "" # @schema default: ""
-    clientSecret: "" # @schema default: ""
-    clientSecretFile: "" # @schema default: ""
-    clientSecretSecretRef:
-      name: "" # @schema default: ""
-      key: "" # @schema default: ""
-    authUrl: "" # @schema default: ""
-    tokenUrl: "" # @schema default: ""
-    userUrl: "" # @schema default: ""
-    scopes: "" # @schema default: ""
-    name: "" # @schema default: ""
-    skipSsl: false # @schema default: false
+  # OAuth Providers Configuration
+  # Configure OAuth providers using dynamic IDs (e.g., GITHUB, GOOGLE, DISCORD)
+  # Each provider generates environment variables in the format: PROVIDERS_[ID]_*
+  # Example:
+  #   providers:
+  #     - id: github
+  #       clientId: "your-github-client-id"
+  #       clientSecret: "your-github-client-secret"
+  #     - id: google
+  #       clientId: "your-google-client-id"
+  #       clientSecretSecretRef:
+  #         name: google-oauth-secret
+  #         key: client-secret
+  #     - id: custom
+  #       clientId: "your-custom-client-id"
+  #       clientSecret: "your-custom-client-secret"
+  #       authUrl: "https://example.com/oauth/authorize"
+  #       tokenUrl: "https://example.com/oauth/token"
+  #       userInfoUrl: "https://example.com/oauth/user"
+  #       scopes: "openid profile email"
+  #       name: "Custom OAuth"
+  #       skipSsl: false
+  providers: # @schema type:array; default:[]
+    - id: "" # @schema type:string; default:""
+      clientId: "" # @schema type:string; default:""
+      clientSecret: "" # @schema type:string; default:""
+      clientSecretFile: "" # @schema type:string; default:""
+      clientSecretSecretRef: # @schema type:object
+        name: "" # @schema type:string; default:""
+        key: "" # @schema type:string; default:""
+      authUrl: "" # @schema type:string; default:""
+      tokenUrl: "" # @schema type:string; default:""
+      userInfoUrl: "" # @schema type:string; default:""
+      scopes: "" # @schema type:string; default:""
+      name: "" # @schema type:string; default:""
+      skipSsl: false # @schema type:boolean; default:false
 
   # LDAP Configuration
   ldap:
+    enabled: false # @schema default: false
     address: "" # @schema default: ""
     bindDn: "" # @schema default: ""
     bindPassword: "" # @schema default: ""
@@ -119,8 +117,7 @@ tinyauth:
 ingress:
   enabled: false # @schema default: false
   className: "" # @schema default: ""
-  annotations: # @schema default: {}
-    {}
+  annotations: {} # @schema default: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts: # @schema default: [{"host": "chart-example.local", "paths": [{"path": "/", "pathType": "ImplementationSpecific"}]}]
@@ -133,8 +130,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  {}
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -146,13 +142,13 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
-livenessProbe: # @schema default: {"httpGet": {"path": "/api/healthcheck", "port": "http"}}
+livenessProbe: # @schema default: {"httpGet": {"path": "/api/health", "port": "http"}}
   httpGet:
-    path: /api/healthcheck
+    path: /api/health
     port: http
-readinessProbe: # @schema default: {"httpGet": {"path": "/api/healthcheck", "port": "http"}}
+readinessProbe: # @schema default: {"httpGet": {"path": "/api/health", "port": "http"}}
   httpGet:
-    path: /api/healthcheck
+    path: /api/health
     port: http
 
 autoscaling:
@@ -203,3 +199,15 @@ env: [] # @schema default: []
 #     secretKeyRef:
 #       name: my-secret
 #       key: secret-key
+
+# Enable persistent storage for SQLite database
+# When enabled a PersistentVolumeClaim will be created to persist the SQLite database
+# this ensures session data is not lost
+persistence:
+  enabled: false # @schema default: false; description: Enable persistent storage for SQLite session database
+  # existingClaim: "" # @schema default: ""; description: Use an existing PersistentVolumeClaim instead of creating a new one
+  storageClass: "" # @schema default: ""; description: StorageClass for the PVC. If not set, the default StorageClass will be used
+  accessMode: ReadWriteOnce # @schema default: "ReadWriteOnce"; description: Access mode for the PVC
+  size: 1Gi # @schema default: "1Gi"; description: Size of the PVC for SQLite database storage
+  mountPath: /data # @schema default: "/data"; description: Mount path for the persistent volume where SQLite database will be stored
+  annotations: {} # @schema default: {}; description: Annotations to add to the PVC

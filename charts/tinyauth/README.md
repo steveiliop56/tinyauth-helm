@@ -1,8 +1,8 @@
 # tinyauth
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.6.2](https://img.shields.io/badge/AppVersion-v3.6.2-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.0.0](https://img.shields.io/badge/AppVersion-v4.0.0-informational?style=flat-square)
 
-A Helm chart for Kubernetes
+The simplest way to protect your apps with a login screen.
 
 ## Values
 
@@ -33,14 +33,20 @@ A Helm chart for Kubernetes
 | ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
 | ingress.tls | list | `[]` |  |
-| livenessProbe.httpGet.path | string | `"/api/healthcheck"` |  |
+| livenessProbe.httpGet.path | string | `"/api/health"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
+| persistence.accessMode | string | `"ReadWriteOnce"` |  |
+| persistence.annotations | object | `{}` |  |
+| persistence.enabled | bool | `false` |  |
+| persistence.mountPath | string | `"/data"` |  |
+| persistence.size | string | `"1Gi"` |  |
+| persistence.storageClass | string | `""` |  |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
-| readinessProbe.httpGet.path | string | `"/api/healthcheck"` |  |
+| readinessProbe.httpGet.path | string | `"/api/health"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
@@ -55,52 +61,42 @@ A Helm chart for Kubernetes
 | tinyauth.general.appTitle | string | `""` |  |
 | tinyauth.general.appUrl | string | `""` |  |
 | tinyauth.general.backgroundImage | string | `""` |  |
-| tinyauth.general.cookieSecure | bool | `false` |  |
 | tinyauth.general.disableContinue | bool | `false` |  |
 | tinyauth.general.forgotPasswordMessage | string | `""` |  |
-| tinyauth.general.logLevel | int | `1` |  |
+| tinyauth.general.logLevel | string | `"info"` |  |
 | tinyauth.general.loginMaxRetries | int | `5` |  |
 | tinyauth.general.loginTimeout | int | `300` |  |
 | tinyauth.general.oauthAutoRedirect | string | `""` |  |
 | tinyauth.general.oauthWhitelist | string | `""` |  |
 | tinyauth.general.port | int | `3000` |  |
-| tinyauth.general.secret | string | `""` |  |
-| tinyauth.general.secretFile | string | `""` |  |
-| tinyauth.general.secretSecretRef.key | string | `""` |  |
-| tinyauth.general.secretSecretRef.name | string | `""` |  |
+| tinyauth.general.secureCookie | bool | `false` |  |
 | tinyauth.general.sessionExpiry | int | `86400` |  |
 | tinyauth.general.users | string | `""` |  |
 | tinyauth.general.usersFile | string | `""` |  |
-| tinyauth.generic.authUrl | string | `""` |  |
-| tinyauth.generic.clientId | string | `""` |  |
-| tinyauth.generic.clientSecret | string | `""` |  |
-| tinyauth.generic.clientSecretFile | string | `""` |  |
-| tinyauth.generic.clientSecretSecretRef.key | string | `""` |  |
-| tinyauth.generic.clientSecretSecretRef.name | string | `""` |  |
-| tinyauth.generic.name | string | `""` |  |
-| tinyauth.generic.scopes | string | `""` |  |
-| tinyauth.generic.skipSsl | bool | `false` |  |
-| tinyauth.generic.tokenUrl | string | `""` |  |
-| tinyauth.generic.userUrl | string | `""` |  |
-| tinyauth.github.clientId | string | `""` |  |
-| tinyauth.github.clientSecret | string | `""` |  |
-| tinyauth.github.clientSecretFile | string | `""` |  |
-| tinyauth.github.clientSecretSecretRef.key | string | `""` |  |
-| tinyauth.github.clientSecretSecretRef.name | string | `""` |  |
-| tinyauth.google.clientId | string | `""` |  |
-| tinyauth.google.clientSecret | string | `""` |  |
-| tinyauth.google.clientSecretFile | string | `""` |  |
-| tinyauth.google.clientSecretSecretRef.key | string | `""` |  |
-| tinyauth.google.clientSecretSecretRef.name | string | `""` |  |
 | tinyauth.ldap.address | string | `""` |  |
 | tinyauth.ldap.baseDn | string | `""` |  |
 | tinyauth.ldap.bindDn | string | `""` |  |
 | tinyauth.ldap.bindPassword | string | `""` |  |
 | tinyauth.ldap.bindPasswordSecretRef.key | string | `""` |  |
 | tinyauth.ldap.bindPasswordSecretRef.name | string | `""` |  |
+| tinyauth.ldap.enabled | bool | `false` |  |
 | tinyauth.ldap.insecure | bool | `false` |  |
 | tinyauth.ldap.searchFilter | string | `"(uid=%s)"` |  |
+| tinyauth.providers[0].authUrl | string | `""` |  |
+| tinyauth.providers[0].clientId | string | `""` |  |
+| tinyauth.providers[0].clientSecret | string | `""` |  |
+| tinyauth.providers[0].clientSecretFile | string | `""` |  |
+| tinyauth.providers[0].clientSecretSecretRef.key | string | `""` |  |
+| tinyauth.providers[0].clientSecretSecretRef.name | string | `""` |  |
+| tinyauth.providers[0].id | string | `""` |  |
+| tinyauth.providers[0].name | string | `""` |  |
+| tinyauth.providers[0].scopes | string | `""` |  |
+| tinyauth.providers[0].skipSsl | bool | `false` |  |
+| tinyauth.providers[0].tokenUrl | string | `""` |  |
+| tinyauth.providers[0].userInfoUrl | string | `""` |  |
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` |  |
 | volumes | list | `[]` |  |
 
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

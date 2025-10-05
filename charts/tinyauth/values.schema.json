@@ -194,7 +194,7 @@
         "livenessProbe": {
             "default": {
                 "httpGet": {
-                    "path": "/api/healthcheck",
+                    "path": "/api/health",
                     "port": "http"
                 }
             },
@@ -219,6 +219,41 @@
         "nodeSelector": {
             "type": "object"
         },
+        "persistence": {
+            "type": "object",
+            "properties": {
+                "accessMode": {
+                    "description": "Access mode for the PVC",
+                    "default": "ReadWriteOnce",
+                    "type": "string"
+                },
+                "annotations": {
+                    "description": "Annotations to add to the PVC",
+                    "default": {},
+                    "type": "object"
+                },
+                "enabled": {
+                    "description": "Enable persistent storage for SQLite session database",
+                    "default": false,
+                    "type": "boolean"
+                },
+                "mountPath": {
+                    "description": "Mount path for the persistent volume where SQLite database will be stored",
+                    "default": "/data",
+                    "type": "string"
+                },
+                "size": {
+                    "description": "Size of the PVC for SQLite database storage",
+                    "default": "1Gi",
+                    "type": "string"
+                },
+                "storageClass": {
+                    "description": "StorageClass for the PVC. If not set, the default StorageClass will be used",
+                    "default": "",
+                    "type": "string"
+                }
+            }
+        },
         "podAnnotations": {
             "type": "object"
         },
@@ -231,7 +266,7 @@
         "readinessProbe": {
             "default": {
                 "httpGet": {
-                    "path": "/api/healthcheck",
+                    "path": "/api/health",
                     "port": "http"
                 }
             },
@@ -297,7 +332,6 @@
                     "type": "object",
                     "required": [
                         "appUrl",
-                        "secret",
                         "users"
                     ],
                     "properties": {
@@ -317,10 +351,6 @@
                             "default": "",
                             "type": "string"
                         },
-                        "cookieSecure": {
-                            "default": false,
-                            "type": "boolean"
-                        },
                         "disableContinue": {
                             "default": false,
                             "type": "boolean"
@@ -331,7 +361,7 @@
                         },
                         "logLevel": {
                             "default": 1,
-                            "type": "integer"
+                            "type": "string"
                         },
                         "loginMaxRetries": {
                             "default": 5,
@@ -353,26 +383,9 @@
                             "default": 3000,
                             "type": "integer"
                         },
-                        "secret": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "secretFile": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "secretSecretRef": {
-                            "type": "object",
-                            "properties": {
-                                "key": {
-                                    "default": "",
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "default": "",
-                                    "type": "string"
-                                }
-                            }
+                        "secureCookie": {
+                            "default": false,
+                            "type": "boolean"
                         },
                         "sessionExpiry": {
                             "default": 86400,
@@ -385,120 +398,6 @@
                         "usersFile": {
                             "default": "",
                             "type": "string"
-                        }
-                    }
-                },
-                "generic": {
-                    "type": "object",
-                    "properties": {
-                        "authUrl": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientId": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecret": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecretFile": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecretSecretRef": {
-                            "type": "object",
-                            "properties": {
-                                "key": {
-                                    "default": "",
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "default": "",
-                                    "type": "string"
-                                }
-                            }
-                        },
-                        "name": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "scopes": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "skipSsl": {
-                            "default": false,
-                            "type": "boolean"
-                        },
-                        "tokenUrl": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "userUrl": {
-                            "default": "",
-                            "type": "string"
-                        }
-                    }
-                },
-                "github": {
-                    "type": "object",
-                    "properties": {
-                        "clientId": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecret": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecretFile": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecretSecretRef": {
-                            "type": "object",
-                            "properties": {
-                                "key": {
-                                    "default": "",
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "default": "",
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                },
-                "google": {
-                    "type": "object",
-                    "properties": {
-                        "clientId": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecret": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecretFile": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "clientSecretSecretRef": {
-                            "type": "object",
-                            "properties": {
-                                "key": {
-                                    "default": "",
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "default": "",
-                                    "type": "string"
-                                }
-                            }
                         }
                     }
                 },
@@ -534,6 +433,10 @@
                                 }
                             }
                         },
+                        "enabled": {
+                            "default": false,
+                            "type": "boolean"
+                        },
                         "insecure": {
                             "default": false,
                             "type": "boolean"
@@ -541,6 +444,68 @@
                         "searchFilter": {
                             "default": "(uid=%s)",
                             "type": "string"
+                        }
+                    }
+                },
+                "providers": {
+                    "default": [],
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "authUrl": {
+                                "default": "",
+                                "type": "string"
+                            },
+                            "clientId": {
+                                "default": "",
+                                "type": "string"
+                            },
+                            "clientSecret": {
+                                "default": "",
+                                "type": "string"
+                            },
+                            "clientSecretFile": {
+                                "default": "",
+                                "type": "string"
+                            },
+                            "clientSecretSecretRef": {
+                                "type": "object",
+                                "properties": {
+                                    "key": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "default": "",
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "id": {
+                                "default": "",
+                                "type": "string"
+                            },
+                            "name": {
+                                "default": "",
+                                "type": "string"
+                            },
+                            "scopes": {
+                                "default": "",
+                                "type": "string"
+                            },
+                            "skipSsl": {
+                                "default": false,
+                                "type": "boolean"
+                            },
+                            "tokenUrl": {
+                                "default": "",
+                                "type": "string"
+                            },
+                            "userInfoUrl": {
+                                "default": "",
+                                "type": "string"
+                            }
                         }
                     }
                 }

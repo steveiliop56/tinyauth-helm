@@ -53,20 +53,6 @@ spec:
             - name: APP_URL
               value: {{ .Values.tinyauth.general.appUrl | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.secretSecretRef.name }}
-            - name: SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.tinyauth.general.secretSecretRef.name }}
-                  key: {{ .Values.tinyauth.general.secretSecretRef.key }}
-            {{- else if .Values.tinyauth.general.secret }}
-            - name: SECRET
-              value: {{ .Values.tinyauth.general.secret | quote }}
-            {{- end }}
-            {{- if .Values.tinyauth.general.secretFile }}
-            - name: SECRET_FILE
-              value: {{ .Values.tinyauth.general.secretFile | quote }}
-            {{- end }}
             {{- if .Values.tinyauth.general.users }}
             - name: USERS
               value: {{ .Values.tinyauth.general.users | quote }}
@@ -75,9 +61,9 @@ spec:
             - name: USERS_FILE
               value: {{ .Values.tinyauth.general.usersFile | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.cookieSecure }}
+            {{- if .Values.tinyauth.general.secureCookie }}
             - name: COOKIE_SECURE
-              value: {{ .Values.tinyauth.general.cookieSecure | quote }}
+              value: {{ .Values.tinyauth.general.secureCookie | quote }}
             {{- end }}
             {{- if .Values.tinyauth.general.disableContinue }}
             - name: DISABLE_CONTINUE
@@ -119,84 +105,52 @@ spec:
             - name: BACKGROUND_IMAGE
               value: {{ .Values.tinyauth.general.backgroundImage | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.github.clientId }}
-            - name: GITHUB_CLIENT_ID
-              value: {{ .Values.tinyauth.github.clientId | quote }}
+            {{- range .Values.tinyauth.providers }}
+            {{- $providerId := .id | upper }}
+            {{- if .clientId }}
+            - name: PROVIDERS_{{ $providerId }}_CLIENT_ID
+              value: {{ .clientId | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.github.clientSecretSecretRef.name }}
-            - name: GITHUB_CLIENT_SECRET
+            {{- if .clientSecretSecretRef.name }}
+            - name: PROVIDERS_{{ $providerId }}_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.tinyauth.github.clientSecretSecretRef.name }}
-                  key: {{ .Values.tinyauth.github.clientSecretSecretRef.key }}
-            {{- else if .Values.tinyauth.github.clientSecret }}
-            - name: GITHUB_CLIENT_SECRET
-              value: {{ .Values.tinyauth.github.clientSecret | quote }}
+                  name: {{ .clientSecretSecretRef.name }}
+                  key: {{ .clientSecretSecretRef.key }}
+            {{- else if .clientSecret }}
+            - name: PROVIDERS_{{ $providerId }}_CLIENT_SECRET
+              value: {{ .clientSecret | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.github.clientSecretFile }}
-            - name: GITHUB_CLIENT_SECRET_FILE
-              value: {{ .Values.tinyauth.github.clientSecretFile | quote }}
+            {{- if .clientSecretFile }}
+            - name: PROVIDERS_{{ $providerId }}_CLIENT_SECRET_FILE
+              value: {{ .clientSecretFile | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.google.clientId }}
-            - name: GOOGLE_CLIENT_ID
-              value: {{ .Values.tinyauth.google.clientId | quote }}
+            {{- if .authUrl }}
+            - name: PROVIDERS_{{ $providerId }}_AUTH_URL
+              value: {{ .authUrl | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.google.clientSecretSecretRef.name }}
-            - name: GOOGLE_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.tinyauth.google.clientSecretSecretRef.name }}
-                  key: {{ .Values.tinyauth.google.clientSecretSecretRef.key }}
-            {{- else if .Values.tinyauth.google.clientSecret }}
-            - name: GOOGLE_CLIENT_SECRET
-              value: {{ .Values.tinyauth.google.clientSecret | quote }}
+            {{- if .tokenUrl }}
+            - name: PROVIDERS_{{ $providerId }}_TOKEN_URL
+              value: {{ .tokenUrl | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.google.clientSecretFile }}
-            - name: GOOGLE_CLIENT_SECRET_FILE
-              value: {{ .Values.tinyauth.google.clientSecretFile | quote }}
+            {{- if .userInfoUrl }}
+            - name: PROVIDERS_{{ $providerId }}_USER_INFO_URL
+              value: {{ .userInfoUrl | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.generic.clientId }}
-            - name: GENERIC_CLIENT_ID
-              value: {{ .Values.tinyauth.generic.clientId | quote }}
+            {{- if .scopes }}
+            - name: PROVIDERS_{{ $providerId }}_SCOPES
+              value: {{ .scopes | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.generic.clientSecretSecretRef.name }}
-            - name: GENERIC_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.tinyauth.generic.clientSecretSecretRef.name }}
-                  key: {{ .Values.tinyauth.generic.clientSecretSecretRef.key }}
-            {{- else if .Values.tinyauth.generic.clientSecret }}
-            - name: GENERIC_CLIENT_SECRET
-              value: {{ .Values.tinyauth.generic.clientSecret | quote }}
+            {{- if .name }}
+            - name: PROVIDERS_{{ $providerId }}_NAME
+              value: {{ .name | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.generic.clientSecretFile }}
-            - name: GENERIC_CLIENT_SECRET_FILE
-              value: {{ .Values.tinyauth.generic.clientSecretFile | quote }}
+            {{- if .skipSsl }}
+            - name: PROVIDERS_{{ $providerId }}_SKIP_SSL
+              value: {{ .skipSsl | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.generic.authUrl }}
-            - name: GENERIC_AUTH_URL
-              value: {{ .Values.tinyauth.generic.authUrl | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.generic.tokenUrl }}
-            - name: GENERIC_TOKEN_URL
-              value: {{ .Values.tinyauth.generic.tokenUrl | quote }}
-            {{- end }}
-            {{- if .Values.tinyauth.generic.userUrl }}
-            - name: GENERIC_USER_URL
-              value: {{ .Values.tinyauth.generic.userUrl | quote }}
-            {{- end }}
-            {{- if .Values.tinyauth.generic.scopes }}
-            - name: GENERIC_SCOPES
-              value: {{ .Values.tinyauth.generic.scopes | quote }}
-            {{- end }}
-            {{- if .Values.tinyauth.generic.name }}
-            - name: GENERIC_NAME
-              value: {{ .Values.tinyauth.generic.name | quote }}
-            {{- end }}
-            {{- if .Values.tinyauth.generic.skipSsl }}
-            - name: GENERIC_SKIP_SSL
-              value: {{ .Values.tinyauth.generic.skipSsl | quote }}
-            {{- end }}
+            {{- if .Values.tinyauth.ldap.enabled }}
             {{- if .Values.tinyauth.ldap.address }}
             - name: LDAP_ADDRESS
               value: {{ .Values.tinyauth.ldap.address | quote }}
@@ -227,6 +181,7 @@ spec:
             - name: LDAP_SEARCH_FILTER
               value: {{ .Values.tinyauth.ldap.searchFilter | quote }}
             {{- end }}
+            {{- end }}
             {{- with .Values.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -236,14 +191,23 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            {{- if .Values.persistence.enabled }}
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+            {{- end }}
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            {{- end }}
       volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default (include "tinyauth.fullname" .) }}
+        {{- end }}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
