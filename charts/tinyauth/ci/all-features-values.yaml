@@ -1,0 +1,119 @@
+replicaCount: 1
+
+env:
+  - name: CUSTOM_VAR
+    values: "custom-value"
+
+image:
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations:
+    example.com/managed-by: "helm"
+  name: ""
+
+podAnnotations:
+  app.kubernetes.io/component: "auth-server"
+
+podLabels:
+  app.kubernetes.io/component: "auth-server"
+
+podSecurityContext:
+  fsGroup: 2000
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+tinyauth:
+  general:
+    port: 3000
+    address: "0.0.0.0"
+    appUrl: "http://tinyauth-test.local"
+    users: "user:$$2a$$10$$UdLYoJ5lgPsC0RKqYH/jMua7zIn0g9kPqWmhYayJYLaZQ/FTmH2/u"
+    secureCookie: false
+    disableContinue: false
+    oauthWhitelist: "*"
+    sessionExpiry: 3600
+    logLevel: info
+    appTitle: "TinyAuth Test"
+    loginMaxRetries: 3
+    loginTimeout: 300
+    forgotPasswordMessage: "Contact admin for password reset"
+    oauthAutoRedirect: "github"
+    backgroundImage: "/static/bg.jpg"
+
+  providers:
+    - id: github
+      clientId: "test-github-client-id"
+      clientSecret: "test-github-client-secret"
+    - id: google
+      clientId: "test-google-client-id"
+      clientSecret: "test-google-client-secret"
+    - id: custom
+      clientId: "test-custom-client-id"
+      clientSecret: "test-custom-client-secret"
+      authUrl: "https://example.com/oauth/authorize"
+      tokenUrl: "https://example.com/oauth/token"
+      userInfoUrl: "https://example.com/oauth/user"
+      scopes: "openid profile email"
+      name: "Custom OAuth"
+      skipSsl: false
+
+  ldap:
+    enabled: true
+    address: "ldap://test-ldap:389"
+    bindDn: "cn=admin,dc=example,dc=com"
+    bindPassword: "test-ldap-password"
+    baseDn: "ou=users,dc=example,dc=com"
+    insecure: true
+    searchFilter: "(uid=%s)"
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: tinyauth-test.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+livenessProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+httpRoute:
+  enabled: false
+
+persistence:
+  enabled: false
