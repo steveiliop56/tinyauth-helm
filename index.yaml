@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   tinyauth:
   - apiVersion: v2
+    appVersion: v4.0.1
+    created: "2025-10-15T16:59:16.71762875Z"
+    description: The simplest way to protect your apps with a login screen.
+    digest: e5fc15349c8089905df45e35b5783610eb775ce9140c69e90a0cfd479b6618b4
+    name: tinyauth
+    type: application
+    urls:
+    - https://github.com/steveiliop56/tinyauth-helm/releases/download/tinyauth-0.3.0/tinyauth-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     appVersion: v4.0.0
     created: "2025-10-08T16:21:55.485318643Z"
     description: The simplest way to protect your apps with a login screen.
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/steveiliop56/tinyauth-helm/releases/download/tinyauth-0.1.0/tinyauth-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-08T16:21:55.485326628Z"
+generated: "2025-10-15T16:59:16.717640863Z"
