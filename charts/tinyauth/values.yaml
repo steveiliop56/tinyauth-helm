@@ -142,13 +142,13 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-livenessProbe: # @schema default: {"httpGet": {"path": "/api/health", "port": "http"}}
+livenessProbe: # @schema default: {"httpGet": {"path": "/api/healthz", "port": "http"}}
   httpGet:
-    path: /api/health
+    path: /api/healthz
     port: http
-readinessProbe: # @schema default: {"httpGet": {"path": "/api/health", "port": "http"}}
+readinessProbe: # @schema default: {"httpGet": {"path": "/api/healthz", "port": "http"}}
   httpGet:
-    path: /api/health
+    path: /api/healthz
     port: http
 
 autoscaling:
