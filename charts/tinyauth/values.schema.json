@@ -30,6 +30,15 @@
                 }
             }
         },
+        "deploymentStrategy": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "default": "RollingUpdate",
+                    "type": "string"
+                }
+            }
+        },
         "env": {
             "default": [],
             "type": "array"
