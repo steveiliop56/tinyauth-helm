@@ -14,6 +14,7 @@ The simplest way to protect your apps with a login screen.
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | autoscaling.targetMemoryUtilizationPercentage | int | `80` |  |
+| deploymentStrategy.type | string | `"RollingUpdate"` |  |
 | env | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
 | httpRoute.annotations | object | `{}` |  |

@@ -5,6 +5,10 @@ metadata:
   labels:
     {{- include "tinyauth.labels" . | nindent 4 }}
 spec:
+  {{- with .Values.deploymentStrategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
