@@ -33,7 +33,7 @@ The simplest way to protect your apps with a login screen.
 | ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
 | ingress.tls | list | `[]` |  |
-| livenessProbe.httpGet.path | string | `"/api/health"` |  |
+| livenessProbe.httpGet.path | string | `"/api/healthz"` |  |
 | livenessProbe.httpGet.port | string | `"http"` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
@@ -46,7 +46,7 @@ The simplest way to protect your apps with a login screen.
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
-| readinessProbe.httpGet.path | string | `"/api/health"` |  |
+| readinessProbe.httpGet.path | string | `"/api/healthz"` |  |
 | readinessProbe.httpGet.port | string | `"http"` |  |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
