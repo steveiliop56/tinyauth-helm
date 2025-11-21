@@ -203,7 +203,7 @@
         "livenessProbe": {
             "default": {
                 "httpGet": {
-                    "path": "/api/health",
+                    "path": "/api/healthz",
                     "port": "http"
                 }
             },
@@ -275,7 +275,7 @@
         "readinessProbe": {
             "default": {
                 "httpGet": {
-                    "path": "/api/health",
+                    "path": "/api/healthz",
                     "port": "http"
                 }
             },
