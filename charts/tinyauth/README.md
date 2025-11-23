@@ -1,6 +1,6 @@
 # tinyauth
 
-![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.1.0](https://img.shields.io/badge/AppVersion-v4.1.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v4.1.0](https://img.shields.io/badge/AppVersion-v4.1.0-informational?style=flat-square)
 
 The simplest way to protect your apps with a login screen.
 
@@ -59,19 +59,25 @@ The simplest way to protect your apps with a login screen.
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
 | tinyauth.general.address | string | `"0.0.0.0"` |  |
-| tinyauth.general.appTitle | string | `""` |  |
+| tinyauth.general.appTitle | string | `"Tinyauth"` |  |
 | tinyauth.general.appUrl | string | `""` |  |
-| tinyauth.general.backgroundImage | string | `""` |  |
-| tinyauth.general.disableContinue | bool | `false` |  |
+| tinyauth.general.backgroundImage | string | `"/background.jpg"` |  |
+| tinyauth.general.databasePath | string | `"/data/tinyauth.db"` |  |
+| tinyauth.general.disableAnalytics | bool | `false` |  |
+| tinyauth.general.disableResources | bool | `false` |  |
+| tinyauth.general.disableUiWarnings | bool | `false` |  |
 | tinyauth.general.forgotPasswordMessage | string | `""` |  |
 | tinyauth.general.logLevel | string | `"info"` |  |
 | tinyauth.general.loginMaxRetries | int | `5` |  |
 | tinyauth.general.loginTimeout | int | `300` |  |
-| tinyauth.general.oauthAutoRedirect | string | `""` |  |
+| tinyauth.general.oauthAutoRedirect | string | `"none"` |  |
 | tinyauth.general.oauthWhitelist | string | `""` |  |
 | tinyauth.general.port | int | `3000` |  |
+| tinyauth.general.resourcesDir | string | `"/data/resources"` |  |
 | tinyauth.general.secureCookie | bool | `false` |  |
 | tinyauth.general.sessionExpiry | int | `86400` |  |
+| tinyauth.general.socketPath | string | `""` |  |
+| tinyauth.general.trustedProxies | string | `""` |  |
 | tinyauth.general.users | string | `""` |  |
 | tinyauth.general.usersFile | string | `""` |  |
 | tinyauth.ldap.address | string | `""` |  |
@@ -80,7 +86,6 @@ The simplest way to protect your apps with a login screen.
 | tinyauth.ldap.bindPassword | string | `""` |  |
 | tinyauth.ldap.bindPasswordSecretRef.key | string | `""` |  |
 | tinyauth.ldap.bindPasswordSecretRef.name | string | `""` |  |
-| tinyauth.ldap.enabled | bool | `false` |  |
 | tinyauth.ldap.insecure | bool | `false` |  |
 | tinyauth.ldap.searchFilter | string | `"(uid=%s)"` |  |
 | tinyauth.providers[0].authUrl | string | `""` |  |
@@ -90,9 +95,9 @@ The simplest way to protect your apps with a login screen.
 | tinyauth.providers[0].clientSecretSecretRef.key | string | `""` |  |
 | tinyauth.providers[0].clientSecretSecretRef.name | string | `""` |  |
 | tinyauth.providers[0].id | string | `""` |  |
+| tinyauth.providers[0].insecureSkipVerify | bool | `false` |  |
 | tinyauth.providers[0].name | string | `""` |  |
 | tinyauth.providers[0].scopes | string | `""` |  |
-| tinyauth.providers[0].skipSsl | bool | `false` |  |
 | tinyauth.providers[0].tokenUrl | string | `""` |  |
 | tinyauth.providers[0].userInfoUrl | string | `""` |  |
 | tolerations | list | `[]` |  |

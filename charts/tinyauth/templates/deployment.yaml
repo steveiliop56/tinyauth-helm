@@ -45,49 +45,45 @@ spec:
               containerPort: {{ .Values.tinyauth.general.port }}
               protocol: TCP
           env:
-            {{- if .Values.tinyauth.general.port }}
-            - name: PORT
-              value: {{ .Values.tinyauth.general.port | quote }}
-            {{- end }}
             {{- if .Values.tinyauth.general.address }}
             - name: ADDRESS
               value: {{ .Values.tinyauth.general.address | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.appTitle }}
+            - name: APP_TITLE
+              value: {{ .Values.tinyauth.general.appTitle | quote }}
             {{- end }}
             {{- if .Values.tinyauth.general.appUrl }}
             - name: APP_URL
               value: {{ .Values.tinyauth.general.appUrl | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.users }}
-            - name: USERS
-              value: {{ .Values.tinyauth.general.users | quote }}
+            {{- if .Values.tinyauth.general.backgroundImage }}
+            - name: BACKGROUND_IMAGE
+              value: {{ .Values.tinyauth.general.backgroundImage | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.usersFile }}
-            - name: USERS_FILE
-              value: {{ .Values.tinyauth.general.usersFile | quote }}
+            {{- if .Values.tinyauth.general.databasePath }}
+            - name: DATABASE_PATH
+              value: {{ .Values.tinyauth.general.databasePath | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.secureCookie }}
-            - name: COOKIE_SECURE
-              value: {{ .Values.tinyauth.general.secureCookie | quote }}
+            {{- if .Values.tinyauth.general.disableAnalytics }}
+            - name: DISABLE_ANALYTICS
+              value: {{ .Values.tinyauth.general.disableAnalytics | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.disableContinue }}
-            - name: DISABLE_CONTINUE
-              value: {{ .Values.tinyauth.general.disableContinue | quote }}
+            {{- if .Values.tinyauth.general.disableResources }}
+            - name: DISABLE_RESOURCES
+              value: {{ .Values.tinyauth.general.disableResources | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.oauthWhitelist }}
-            - name: OAUTH_WHITELIST
-              value: {{ .Values.tinyauth.general.oauthWhitelist | quote }}
+            {{- if .Values.tinyauth.general.disableUiWarnings }}
+            - name: DISABLE_UI_WARNINGS
+              value: {{ .Values.tinyauth.general.disableUiWarnings | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.sessionExpiry }}
-            - name: SESSION_EXPIRY
-              value: {{ .Values.tinyauth.general.sessionExpiry | quote }}
+            {{- if .Values.tinyauth.general.forgotPasswordMessage }}
+            - name: FORGOT_PASSWORD_MESSAGE
+              value: {{ .Values.tinyauth.general.forgotPasswordMessage | quote }}
             {{- end }}
             {{- if .Values.tinyauth.general.logLevel }}
             - name: LOG_LEVEL
               value: {{ .Values.tinyauth.general.logLevel | quote }}
-            {{- end }}
-            {{- if .Values.tinyauth.general.appTitle }}
-            - name: APP_TITLE
-              value: {{ .Values.tinyauth.general.appTitle | quote }}
             {{- end }}
             {{- if .Values.tinyauth.general.loginMaxRetries }}
             - name: LOGIN_MAX_RETRIES
@@ -97,17 +93,45 @@ spec:
             - name: LOGIN_TIMEOUT
               value: {{ .Values.tinyauth.general.loginTimeout | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.forgotPasswordMessage }}
-            - name: FORGOT_PASSWORD_MESSAGE
-              value: {{ .Values.tinyauth.general.forgotPasswordMessage | quote }}
-            {{- end }}
             {{- if .Values.tinyauth.general.oauthAutoRedirect }}
             - name: OAUTH_AUTO_REDIRECT
               value: {{ .Values.tinyauth.general.oauthAutoRedirect | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.general.backgroundImage }}
-            - name: BACKGROUND_IMAGE
-              value: {{ .Values.tinyauth.general.backgroundImage | quote }}
+            {{- if .Values.tinyauth.general.oauthWhitelist }}
+            - name: OAUTH_WHITELIST
+              value: {{ .Values.tinyauth.general.oauthWhitelist | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.port }}
+            - name: PORT
+              value: {{ .Values.tinyauth.general.port | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.resourcesDir }}
+            - name: RESOURCES_DIR
+              value: {{ .Values.tinyauth.general.resourcesDir | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.secureCookie }}
+            - name: SECURE_COOKIE
+              value: {{ .Values.tinyauth.general.secureCookie | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.sessionExpiry }}
+            - name: SESSION_EXPIRY
+              value: {{ .Values.tinyauth.general.sessionExpiry | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.socketPath }}
+            - name: SOCKET_PATH
+              value: {{ .Values.tinyauth.general.socketPath | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.trustedProxies }}
+            - name: TRUSTED_PROXIES
+              value: {{ .Values.tinyauth.general.trustedProxies | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.users }}
+            - name: USERS
+              value: {{ .Values.tinyauth.general.users | quote }}
+            {{- end }}
+            {{- if .Values.tinyauth.general.usersFile }}
+            - name: USERS_FILE
+              value: {{ .Values.tinyauth.general.usersFile | quote }}
             {{- end }}
             {{- range .Values.tinyauth.providers }}
             {{- $providerId := .id | upper }}
@@ -149,12 +173,11 @@ spec:
             - name: PROVIDERS_{{ $providerId }}_NAME
               value: {{ .name | quote }}
             {{- end }}
-            {{- if .skipSsl }}
-            - name: PROVIDERS_{{ $providerId }}_SKIP_SSL
-              value: {{ .skipSsl | quote }}
+            {{- if .insecureSkipVerify }}
+            - name: PROVIDERS_{{ $providerId }}_INSECURE_SKIP_VERIFY
+              value: {{ .insecureSkipVerify | quote }}
             {{- end }}
             {{- end }}
-            {{- if .Values.tinyauth.ldap.enabled }}
             {{- if .Values.tinyauth.ldap.address }}
             - name: LDAP_ADDRESS
               value: {{ .Values.tinyauth.ldap.address | quote }}
@@ -184,7 +207,6 @@ spec:
             {{- if .Values.tinyauth.ldap.searchFilter }}
             - name: LDAP_SEARCH_FILTER
               value: {{ .Values.tinyauth.ldap.searchFilter | quote }}
-            {{- end }}
             {{- end }}
             {{- with .Values.env }}
             {{- toYaml . | nindent 12 }}

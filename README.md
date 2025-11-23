@@ -3,7 +3,7 @@
 A Helm chart for running Tinyauth in a Kubernetes cluster.
 
 > [!WARNING]
-> This Helm chart is a community project. I’m not a Helm expert, so complex issues might be beyond my debugging skills. If you run into problems, please visit the [Discord](https://discord.gg/eHzVaCzRRd) server for help from contributors who know their way around Helm better than I do.
+> This Helm chart is a community project. I'm not a Helm expert, so complex issues might be beyond my debugging skills. If you run into problems, please visit the [Discord](https://discord.gg/eHzVaCzRRd) server for help from contributors who know their way around Helm better than I do.
 
 ## Development
 

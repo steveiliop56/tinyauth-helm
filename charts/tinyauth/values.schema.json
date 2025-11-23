@@ -349,7 +349,7 @@
                             "type": "string"
                         },
                         "appTitle": {
-                            "default": "",
+                            "default": "Tinyauth",
                             "type": "string"
                         },
                         "appUrl": {
@@ -357,10 +357,22 @@
                             "type": "string"
                         },
                         "backgroundImage": {
-                            "default": "",
+                            "default": "/background.jpg",
                             "type": "string"
                         },
-                        "disableContinue": {
+                        "databasePath": {
+                            "default": "/data/tinyauth.db",
+                            "type": "string"
+                        },
+                        "disableAnalytics": {
+                            "default": false,
+                            "type": "boolean"
+                        },
+                        "disableResources": {
+                            "default": false,
+                            "type": "boolean"
+                        },
+                        "disableUiWarnings": {
                             "default": false,
                             "type": "boolean"
                         },
@@ -369,7 +381,7 @@
                             "type": "string"
                         },
                         "logLevel": {
-                            "default": 1,
+                            "default": "info",
                             "type": "string"
                         },
                         "loginMaxRetries": {
@@ -381,7 +393,7 @@
                             "type": "integer"
                         },
                         "oauthAutoRedirect": {
-                            "default": "",
+                            "default": "none",
                             "type": "string"
                         },
                         "oauthWhitelist": {
@@ -392,6 +404,10 @@
                             "default": 3000,
                             "type": "integer"
                         },
+                        "resourcesDir": {
+                            "default": "/data/resources",
+                            "type": "string"
+                        },
                         "secureCookie": {
                             "default": false,
                             "type": "boolean"
@@ -399,6 +415,14 @@
                         "sessionExpiry": {
                             "default": 86400,
                             "type": "integer"
+                        },
+                        "socketPath": {
+                            "default": "",
+                            "type": "string"
+                        },
+                        "trustedProxies": {
+                            "default": "",
+                            "type": "string"
                         },
                         "users": {
                             "default": "",
@@ -441,10 +465,6 @@
                                     "type": "string"
                                 }
                             }
-                        },
-                        "enabled": {
-                            "default": false,
-                            "type": "boolean"
                         },
                         "insecure": {
                             "default": false,
@@ -495,6 +515,10 @@
                                 "default": "",
                                 "type": "string"
                             },
+                            "insecureSkipVerify": {
+                                "default": false,
+                                "type": "boolean"
+                            },
                             "name": {
                                 "default": "",
                                 "type": "string"
@@ -502,10 +526,6 @@
                             "scopes": {
                                 "default": "",
                                 "type": "string"
-                            },
-                            "skipSsl": {
-                                "default": false,
-                                "type": "boolean"
                             },
                             "tokenUrl": {
                                 "default": "",
