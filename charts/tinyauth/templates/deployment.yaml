@@ -80,13 +80,13 @@ spec:
               value: {{ .Values.tinyauth.server.socketPath | quote }}
             {{- end }}
             # auth config
-            {{- if .Values.tinyauth.auth.ipAllow }}
+            {{- if .Values.tinyauth.auth.ip.allow }}
             - name: TINYAUTH_AUTH_IP_ALLOW
-              value: {{ .Values.tinyauth.auth.ipAllow | quote }}
+              value: {{ .Values.tinyauth.auth.ip.allow | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.auth.ipBlock }}
+            {{- if .Values.tinyauth.auth.ip.block }}
             - name: TINYAUTH_AUTH_IP_BLOCK
-              value: {{ .Values.tinyauth.auth.ipBlock | quote }}
+              value: {{ .Values.tinyauth.auth.ip.block | quote }}
             {{- end }}
             {{- if .Values.tinyauth.auth.users }}
             - name: TINYAUTH_AUTH_USERS
