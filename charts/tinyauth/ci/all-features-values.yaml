@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/steveiliop56/tinyauth
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "nightly"
 
 serviceAccount:
   create: true
@@ -35,7 +35,7 @@ tinyauth:
     address: "0.0.0.0"
 
   auth:
-    users: "admin:$$2a$$10$$abcdefghijklmnopqrstuvwxyz"
+    users: "admin:$$2a$$10$$IOskOE6lyhb8YjYBgfGLNO7OQNiXIPV1tqaMM3ySEzAmYGQdvdsQ2"
 
   ui:
     title: "Tinyauth CI"
