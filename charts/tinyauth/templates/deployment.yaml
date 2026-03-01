@@ -130,6 +130,7 @@ spec:
               value: {{ .Values.tinyauth.oauth.autoRedirect | quote }}
             {{- end }}
             {{- range .Values.tinyauth.oauth.providers }}
+            {{- if not .id }}{{- continue }}{{- end }}
             {{- $providerId := .id | upper }}
             {{- if .clientId }}
             - name: TINYAUTH_OAUTH_PROVIDERS_{{ $providerId }}_CLIENTID
@@ -188,6 +189,7 @@ spec:
               value: {{ .Values.tinyauth.oidc.publicKeyPath | quote }}
             {{- end }}
             {{- range .Values.tinyauth.oidc.clients }}
+            {{- if not .id }}{{- continue }}{{- end }}
             {{- $clientId := .id | upper }}
             {{- if .clientId }}
             - name: TINYAUTH_OIDC_CLIENTS_{{ $clientId }}_CLIENTID
