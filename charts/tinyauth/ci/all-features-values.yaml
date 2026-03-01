@@ -234,7 +234,7 @@ affinity:
 
 # Gateway API HTTPRoute configuration
 httpRoute:
-  enabled: true
+  enabled: false
   annotations:
     example.com/route-annotation: "test-value"
   parentRefs:
