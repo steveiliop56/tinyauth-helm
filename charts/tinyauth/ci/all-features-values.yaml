@@ -1,293 +1,81 @@
-# All features enabled values for CI testing
-# This file tests all configuration options and features of the Tinyauth Helm chart
+# CI testing values for tinyauth Helm chart
+# Minimal setup designed to run fast and reliably on a kind cluster
 
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: ghcr.io/steveiliop56/tinyauth
-  pullPolicy: Always
-  tag: "latest"
-
-imagePullSecrets:
-  - name: regcred
-
-nameOverride: "tinyauth-test"
-fullnameOverride: "tinyauth-full-test"
+  pullPolicy: IfNotPresent
+  tag: "v5"
 
 serviceAccount:
   create: true
   automount: true
   annotations:
-    example.com/annotation: "test-value"
+    example.com/annotation: "ci-test"
   name: "tinyauth-sa"
 
 podAnnotations:
-  example.com/pod-annotation: "test-pod"
+  example.com/pod-annotation: "ci-test"
 
 podLabels:
   environment: "ci"
-  team: "platform"
-
-podSecurityContext:
-  fsGroup: 2000
-  runAsNonRoot: true
-  runAsUser: 1000
-
-securityContext:
-  capabilities:
-    drop:
-      - ALL
-  readOnlyRootFilesystem: false
-  runAsNonRoot: true
-  runAsUser: 1000
 
 service:
   type: ClusterIP
   port: 80
 
-# Tinyauth Configuration - All options enabled
+# Tinyauth Configuration
 tinyauth:
-  general:
-    address: "0.0.0.0"
-    appTitle: "Tinyauth CI Test"
-    appUrl: "https://tinyauth.example.com"
-    backgroundImage: "/custom-background.jpg"
-    databasePath: "/data/tinyauth.db"
-    disableAnalytics: true
-    disableResources: false
-    disableUiWarnings: true
-    forgotPasswordMessage: "Contact admin@example.com for password reset"
-    logLevel: "debug"
-    loginMaxRetries: 3
-    loginTimeout: 600
-    oauthAutoRedirect: "github"
-    oauthWhitelist: "user1@example.com,user2@example.com,admin@example.com"
+  appUrl: "https://tinyauth.example.com"
+  disableAnalytics: true
+
+  server:
     port: 3000
-    resourcesDir: "/data/resources"
-    secureCookie: true
-    sessionExpiry: 43200
-    socketPath: ""
-    trustedProxies: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-    users: "admin:$2a$10$abcdefghijklmnopqrstuvwxyz,user:$2a$10$1234567890abcdefghijklmn"
-    usersFile: "/data/users.txt"
+    address: "0.0.0.0"
 
-  # OAuth Providers - Testing multiple providers
-  providers:
-    - id: "github"
-      clientId: "github-client-id"
-      clientSecret: "github-client-secret"
-      authUrl: "https://github.com/login/oauth/authorize"
-      tokenUrl: "https://github.com/login/oauth/access_token"
-      userInfoUrl: "https://api.github.com/user"
-      scopes: "user:email"
-      name: "GitHub"
-      insecureSkipVerify: false
-    - id: "google"
-      clientId: "google-client-id"
-      clientSecretSecretRef:
-        name: "google-oauth-secret"
-        key: "client-secret"
-      authUrl: "https://accounts.google.com/o/oauth2/auth"
-      tokenUrl: "https://oauth2.googleapis.com/token"
-      userInfoUrl: "https://www.googleapis.com/oauth2/v2/userinfo"
-      scopes: "openid email profile"
-      name: "Google"
-      insecureSkipVerify: false
-    - id: "custom"
-      clientId: "custom-client-id"
-      clientSecret: "custom-client-secret"
-      clientSecretFile: "/secrets/custom-secret"
-      authUrl: "https://auth.example.com/oauth/authorize"
-      tokenUrl: "https://auth.example.com/oauth/token"
-      userInfoUrl: "https://auth.example.com/oauth/userinfo"
-      scopes: "openid profile email"
-      name: "Custom OAuth"
-      insecureSkipVerify: true
+  auth:
+    users: "admin:$$2a$$10$$IOskOE6lyhb8YjYBgfGLNO7OQNiXIPV1tqaMM3ySEzAmYGQdvdsQ2"
 
-  # LDAP Configuration - Fully configured
-  ldap:
-    address: "ldaps://ldap.example.com:636"
-    bindDn: "cn=admin,dc=example,dc=com"
-    bindPassword: "admin-password"
-    bindPasswordSecretRef:
-      name: "ldap-secret"
-      key: "bind-password"
-    baseDn: "dc=example,dc=com"
-    insecure: false
-    searchFilter: "(uid=%s)"
+  ui:
+    title: "Tinyauth CI"
 
-# Ingress - Fully configured
+  log:
+    level: "info"
+
 ingress:
   enabled: true
-  className: "nginx"
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  className: ""
+  annotations: {}
   hosts:
     - host: tinyauth-ci.example.com
       paths:
         - path: /
           pathType: ImplementationSpecific
-    - host: auth.example.com
-      paths:
-        - path: /auth
-          pathType: Prefix
-  tls:
-    - secretName: tinyauth-tls
-      hosts:
-        - tinyauth-ci.example.com
-        - auth.example.com
+  tls: []
 
-# Resource limits and requests
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 250m
-    memory: 256Mi
-
-# Health checks with custom configuration
 livenessProbe:
   httpGet:
     path: /api/healthz
     port: http
-  initialDelaySeconds: 30
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
 
 readinessProbe:
   httpGet:
     path: /api/healthz
     port: http
-  initialDelaySeconds: 5
-  periodSeconds: 5
-  timeoutSeconds: 3
-  failureThreshold: 3
 
-# Autoscaling enabled
 autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 70
-  targetMemoryUtilizationPercentage: 80
+  enabled: false
 
-# Additional volumes for testing
-volumes:
-  - name: config-volume
-    configMap:
-      name: tinyauth-config
-  - name: secret-volume
-    secret:
-      secretName: tinyauth-secrets
-      optional: false
-
-# Additional volume mounts
-volumeMounts:
-  - name: config-volume
-    mountPath: "/etc/config"
-    readOnly: true
-  - name: secret-volume
-    mountPath: "/etc/secrets"
-    readOnly: true
-
-# Node selection and scheduling
-nodeSelector:
-  kubernetes.io/arch: amd64
-  node-type: compute
-
-tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "tinyauth"
-    effect: "NoSchedule"
-  - key: "node.kubernetes.io/not-ready"
-    operator: "Exists"
-    effect: "NoExecute"
-    tolerationSeconds: 300
-
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/arch
-              operator: In
-              values:
-                - amd64
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - tinyauth
-          topologyKey: kubernetes.io/hostname
-
-# Gateway API HTTPRoute configuration
-httpRoute:
-  enabled: true
-  annotations:
-    example.com/route-annotation: "test-value"
-  parentRefs:
-    - name: my-gateway
-      namespace: gateway-system
-    - name: secondary-gateway
-  hostnames:
-    - tinyauth-gateway.example.com
-    - auth-gateway.example.com
-  rules:
-    - matches:
-        - path:
-            type: Prefix
-            value: /
-    - matches:
-        - path:
-            type: Exact
-            value: /auth
-        - headers:
-            - name: x-auth-required
-              value: "true"
-
-# Additional environment variables
-env:
-  - name: CUSTOM_VAR
-    value: "custom_value"
-  - name: SECRET_VAR
-    valueFrom:
-      secretKeyRef:
-        name: my-secret
-        key: secret-key
-  - name: CONFIGMAP_VAR
-    valueFrom:
-      configMapKeyRef:
-        name: my-config
-        key: config-key
-  - name: NODE_NAME
-    valueFrom:
-      fieldRef:
-        fieldPath: spec.nodeName
-  - name: POD_IP
-    valueFrom:
-      fieldRef:
-        fieldPath: status.podIP
-
-# Persistent storage enabled
 persistence:
-  enabled: true
-  existingClaim: ""
-  storageClass: "fast-ssd"
-  accessMode: ReadWriteOnce
-  size: 5Gi
-  mountPath: /data
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "fast-ssd"
-    example.com/backup: "enabled"
+  enabled: false
+
+httpRoute:
+  enabled: false
+
+volumes: []
+volumeMounts: []
+nodeSelector: {}
+tolerations: []
+affinity: {}
+env: []

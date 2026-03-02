@@ -30,12 +30,10 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext:
-  {}
+securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -49,61 +47,154 @@ service:
 
 # Tinyauth Configuration
 tinyauth:
-  general:
-    address: "0.0.0.0" # @schema default: "0.0.0.0"
-    appTitle: "Tinyauth" # @schema default: "Tinyauth"
-    appUrl: "" # @schema default: ""; required: true
-    backgroundImage: "/background.jpg" # @schema default: "/background.jpg"
-    databasePath: "/data/tinyauth.db" # @schema default: "/data/tinyauth.db"
-    disableAnalytics: false # @schema default: false
-    disableResources: false # @schema default: false
-    disableUiWarnings: false # @schema default: false
-    forgotPasswordMessage: "" # @schema default: ""
-    logLevel: "info" # @schema default: "info"
-    loginMaxRetries: 5 # @schema default: 5
-    loginTimeout: 300 # @schema default: 300
-    oauthAutoRedirect: "none" # @schema default: "none"
-    oauthWhitelist: "" # @schema default: ""
+  # The base URL where the app is hosted.
+  appUrl: "" # @schema default: ""; required: true
+  # The directory where resources are stored.
+  resourcesDir: "/data/resources" # @schema default: "/data/resources"
+  # The path to the database file.
+  databasePath: "/data/tinyauth.db" # @schema default: "/data/tinyauth.db"
+  # Disable analytics.
+  disableAnalytics: false # @schema default: false
+  # Disable resources server.
+  disableResources: false # @schema default: false
+
+  # server config
+  server:
+    # The port on which the server listens.
     port: 3000 # @schema default: 3000
-    resourcesDir: "/data/resources" # @schema default: "/data/resources"
-    secureCookie: false # @schema default: false
-    sessionExpiry: 86400 # @schema default: 86400
+    # The address on which the server listens.
+    address: "0.0.0.0" # @schema default: "0.0.0.0"
+    # The path to the Unix socket.
     socketPath: "" # @schema default: ""
-    trustedProxies: "" # @schema default: ""
-    users: "" # @schema default: ""; required: true
+
+  # auth config
+  auth:
+    # IP allowlisting and blacklisting settings
+    ip:
+      # List of allowed IPs or CIDR ranges.
+      allow: "" # @schema default: ""
+      # List of blocked IPs or CIDR ranges.
+      block: "" # @schema default: ""
+    # Comma-separated list of users (username:hashed_password).
+    users: "" # @schema default: ""
+    # Path to the users file.
     usersFile: "" # @schema default: ""
+    # Enable secure cookies.
+    secureCookie: false # @schema default: false
+    # Session expiry time in seconds.
+    sessionExpiry: 86400 # @schema default: 86400
+    # Maximum session lifetime in seconds.
+    sessionMaxLifetime: 0 # @schema default: 0
+    # Login timeout in seconds.
+    loginTimeout: 300 # @schema default: 300
+    # Maximum login retries.
+    loginMaxRetries: 3 # @schema default: 3
+    # Comma-separated list of trusted proxy addresses.
+    trustedProxies: "" # @schema default: ""
 
-  providers: # @schema type:array; default:[]
-    - id: "" # @schema type:string; default:""
-      clientId: "" # @schema type:string; default:""
-      clientSecret: "" # @schema type:string; default:""
-      clientSecretFile: "" # @schema type:string; default:""
-      clientSecretSecretRef: # @schema type:object
+  # oauth config
+  oauth:
+    # Comma-separated list of allowed OAuth domains.
+    whitelist: "" # @schema default: ""
+    # The OAuth provider to use for automatic redirection.
+    autoRedirect: "" # @schema default: ""
+    # OAuth providers list.
+    providers: # @schema type:array; default:[]
+      - id: "" # @schema type:string; default:""
+        clientId: "" # @schema type:string; default:""
+        clientSecret: "" # @schema type:string; default:""
+        clientSecretFile: "" # @schema type:string; default:""
+        clientSecretSecretRef: # @schema type:object
+          name: "" # @schema type:string; default:""
+          key: "" # @schema type:string; default:""
+        scopes: "" # @schema type:string; default:""
+        redirectUrl: "" # @schema type:string; default:""
+        authUrl: "" # @schema type:string; default:""
+        tokenUrl: "" # @schema type:string; default:""
+        userInfoUrl: "" # @schema type:string; default:""
+        insecure: false # @schema type:boolean; default:false
         name: "" # @schema type:string; default:""
-        key: "" # @schema type:string; default:""
-      authUrl: "" # @schema type:string; default:""
-      tokenUrl: "" # @schema type:string; default:""
-      userInfoUrl: "" # @schema type:string; default:""
-      scopes: "" # @schema type:string; default:""
-      name: "" # @schema type:string; default:""
-      insecureSkipVerify: false # @schema type:boolean; default:false
 
+  # oidc config
+  oidc:
+    # Path to the private key file.
+    privateKeyPath: "" # @schema default: ""
+    # Path to the public key file.
+    publicKeyPath: "" # @schema default: ""
+    # OIDC clients list.
+    clients: # @schema type:array; default:[]
+      - id: "" # @schema type:string; default:""
+        clientId: "" # @schema type:string; default:""
+        clientSecret: "" # @schema type:string; default:""
+        clientSecretFile: "" # @schema type:string; default:""
+        clientSecretSecretRef: # @schema type:object
+          name: "" # @schema type:string; default:""
+          key: "" # @schema type:string; default:""
+        trustedRedirectUris: "" # @schema type:string; default:""
+        name: "" # @schema type:string; default:""
+
+  # ui config
+  ui:
+    # The title of the UI.
+    title: "Tinyauth" # @schema default: "Tinyauth"
+    # Message displayed on the forgot password page.
+    forgotPasswordMessage: "You can change your password by changing the configuration." # @schema default: "You can change your password by changing the configuration."
+    # Path to the background image.
+    backgroundImage: "/background.jpg" # @schema default: "/background.jpg"
+    # Disable UI warnings.
+    disableWarnings: false # @schema default: false
+
+  # ldap config
   ldap:
+    # LDAP server address.
     address: "" # @schema default: ""
+    # Bind DN for LDAP authentication.
     bindDn: "" # @schema default: ""
+    # Bind password for LDAP authentication.
     bindPassword: "" # @schema default: ""
     bindPasswordSecretRef:
       name: "" # @schema default: ""
       key: "" # @schema default: ""
+    # Base DN for LDAP searches.
     baseDn: "" # @schema default: ""
+    # Allow insecure LDAP connections.
     insecure: false # @schema default: false
+    # LDAP search filter.
     searchFilter: "(uid=%s)" # @schema default: "(uid=%s)"
+    # Certificate for mTLS authentication.
+    authCert: "" # @schema default: ""
+    # Certificate key for mTLS authentication.
+    authKey: "" # @schema default: ""
+    # Cache duration for LDAP group membership in seconds.
+    groupCacheTtl: 900 # @schema default: 900
+
+  # log config
+  log:
+    # Log level (trace, debug, info, warn, error).
+    level: "info" # @schema default: "info"
+    # Enable JSON formatted logs.
+    json: false # @schema default: false
+    streams:
+      http:
+        # Enable this log stream.
+        enabled: true # @schema default: true
+        # Log level for this stream. Use global if empty.
+        level: "" # @schema default: ""
+      app:
+        # Enable this log stream.
+        enabled: true # @schema default: true
+        # Log level for this stream. Use global if empty.
+        level: "" # @schema default: ""
+      audit:
+        # Enable this log stream.
+        enabled: false # @schema default: false
+        # Log level for this stream. Use global if empty.
+        level: "" # @schema default: ""
 
 ingress:
   enabled: false # @schema default: false
   className: "" # @schema default: ""
-  annotations:
-    {} # @schema default: {}
+  annotations: {} # @schema default: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts: # @schema default: [{"host": "chart-example.local", "paths": [{"path": "/", "pathType": "ImplementationSpecific"}]}]
@@ -116,8 +207,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  {}
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -187,7 +277,7 @@ env: [] # @schema default: []
 #       name: my-secret
 #       key: secret-key
 
-# Enable persistent storage for SQLite database
+# Enable persistent storage for SQLite database and OIDC keys
 # When enabled a PersistentVolumeClaim will be created to persist the SQLite database
 # this ensures session data is not lost
 persistence:

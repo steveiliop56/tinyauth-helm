@@ -336,77 +336,37 @@
         },
         "tinyauth": {
             "type": "object",
+            "required": [
+                "appUrl"
+            ],
             "properties": {
-                "general": {
+                "appUrl": {
+                    "default": "",
+                    "type": "string"
+                },
+                "auth": {
                     "type": "object",
-                    "required": [
-                        "appUrl",
-                        "users"
-                    ],
                     "properties": {
-                        "address": {
-                            "default": "0.0.0.0",
-                            "type": "string"
-                        },
-                        "appTitle": {
-                            "default": "Tinyauth",
-                            "type": "string"
-                        },
-                        "appUrl": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "backgroundImage": {
-                            "default": "/background.jpg",
-                            "type": "string"
-                        },
-                        "databasePath": {
-                            "default": "/data/tinyauth.db",
-                            "type": "string"
-                        },
-                        "disableAnalytics": {
-                            "default": false,
-                            "type": "boolean"
-                        },
-                        "disableResources": {
-                            "default": false,
-                            "type": "boolean"
-                        },
-                        "disableUiWarnings": {
-                            "default": false,
-                            "type": "boolean"
-                        },
-                        "forgotPasswordMessage": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "logLevel": {
-                            "default": "info",
-                            "type": "string"
+                        "ip": {
+                            "type": "object",
+                            "properties": {
+                                "allow": {
+                                    "default": "",
+                                    "type": "string"
+                                },
+                                "block": {
+                                    "default": "",
+                                    "type": "string"
+                                }
+                            }
                         },
                         "loginMaxRetries": {
-                            "default": 5,
+                            "default": 3,
                             "type": "integer"
                         },
                         "loginTimeout": {
                             "default": 300,
                             "type": "integer"
-                        },
-                        "oauthAutoRedirect": {
-                            "default": "none",
-                            "type": "string"
-                        },
-                        "oauthWhitelist": {
-                            "default": "",
-                            "type": "string"
-                        },
-                        "port": {
-                            "default": 3000,
-                            "type": "integer"
-                        },
-                        "resourcesDir": {
-                            "default": "/data/resources",
-                            "type": "string"
                         },
                         "secureCookie": {
                             "default": false,
@@ -416,9 +376,9 @@
                             "default": 86400,
                             "type": "integer"
                         },
-                        "socketPath": {
-                            "default": "",
-                            "type": "string"
+                        "sessionMaxLifetime": {
+                            "default": 0,
+                            "type": "integer"
                         },
                         "trustedProxies": {
                             "default": "",
@@ -434,10 +394,30 @@
                         }
                     }
                 },
+                "databasePath": {
+                    "default": "/data/tinyauth.db",
+                    "type": "string"
+                },
+                "disableAnalytics": {
+                    "default": false,
+                    "type": "boolean"
+                },
+                "disableResources": {
+                    "default": false,
+                    "type": "boolean"
+                },
                 "ldap": {
                     "type": "object",
                     "properties": {
                         "address": {
+                            "default": "",
+                            "type": "string"
+                        },
+                        "authCert": {
+                            "default": "",
+                            "type": "string"
+                        },
+                        "authKey": {
                             "default": "",
                             "type": "string"
                         },
@@ -466,6 +446,10 @@
                                 }
                             }
                         },
+                        "groupCacheTtl": {
+                            "default": 900,
+                            "type": "integer"
+                        },
                         "insecure": {
                             "default": false,
                             "type": "boolean"
@@ -476,65 +460,240 @@
                         }
                     }
                 },
-                "providers": {
-                    "default": [],
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "authUrl": {
-                                "default": "",
-                                "type": "string"
-                            },
-                            "clientId": {
-                                "default": "",
-                                "type": "string"
-                            },
-                            "clientSecret": {
-                                "default": "",
-                                "type": "string"
-                            },
-                            "clientSecretFile": {
-                                "default": "",
-                                "type": "string"
-                            },
-                            "clientSecretSecretRef": {
+                "log": {
+                    "type": "object",
+                    "properties": {
+                        "json": {
+                            "default": false,
+                            "type": "boolean"
+                        },
+                        "level": {
+                            "default": "info",
+                            "type": "string"
+                        },
+                        "streams": {
+                            "type": "object",
+                            "properties": {
+                                "app": {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "default": true,
+                                            "type": "boolean"
+                                        },
+                                        "level": {
+                                            "default": "",
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "audit": {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "default": false,
+                                            "type": "boolean"
+                                        },
+                                        "level": {
+                                            "default": "",
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "http": {
+                                    "type": "object",
+                                    "properties": {
+                                        "enabled": {
+                                            "default": true,
+                                            "type": "boolean"
+                                        },
+                                        "level": {
+                                            "default": "",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "oauth": {
+                    "type": "object",
+                    "properties": {
+                        "autoRedirect": {
+                            "default": "",
+                            "type": "string"
+                        },
+                        "providers": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
                                 "type": "object",
                                 "properties": {
-                                    "key": {
+                                    "authUrl": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "clientId": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "clientSecret": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "clientSecretFile": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "clientSecretSecretRef": {
+                                        "type": "object",
+                                        "properties": {
+                                            "key": {
+                                                "default": "",
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "default": "",
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "id": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "insecure": {
+                                        "default": false,
+                                        "type": "boolean"
+                                    },
+                                    "name": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "redirectUrl": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "scopes": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "tokenUrl": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "userInfoUrl": {
+                                        "default": "",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "whitelist": {
+                            "default": "",
+                            "type": "string"
+                        }
+                    }
+                },
+                "oidc": {
+                    "type": "object",
+                    "properties": {
+                        "clients": {
+                            "default": [],
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "clientId": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "clientSecret": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "clientSecretFile": {
+                                        "default": "",
+                                        "type": "string"
+                                    },
+                                    "clientSecretSecretRef": {
+                                        "type": "object",
+                                        "properties": {
+                                            "key": {
+                                                "default": "",
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "default": "",
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "id": {
                                         "default": "",
                                         "type": "string"
                                     },
                                     "name": {
                                         "default": "",
                                         "type": "string"
+                                    },
+                                    "trustedRedirectUris": {
+                                        "default": "",
+                                        "type": "string"
                                     }
                                 }
-                            },
-                            "id": {
-                                "default": "",
-                                "type": "string"
-                            },
-                            "insecureSkipVerify": {
-                                "default": false,
-                                "type": "boolean"
-                            },
-                            "name": {
-                                "default": "",
-                                "type": "string"
-                            },
-                            "scopes": {
-                                "default": "",
-                                "type": "string"
-                            },
-                            "tokenUrl": {
-                                "default": "",
-                                "type": "string"
-                            },
-                            "userInfoUrl": {
-                                "default": "",
-                                "type": "string"
                             }
+                        },
+                        "privateKeyPath": {
+                            "default": "",
+                            "type": "string"
+                        },
+                        "publicKeyPath": {
+                            "default": "",
+                            "type": "string"
+                        }
+                    }
+                },
+                "resourcesDir": {
+                    "default": "/data/resources",
+                    "type": "string"
+                },
+                "server": {
+                    "type": "object",
+                    "properties": {
+                        "address": {
+                            "default": "0.0.0.0",
+                            "type": "string"
+                        },
+                        "port": {
+                            "default": 3000,
+                            "type": "integer"
+                        },
+                        "socketPath": {
+                            "default": "",
+                            "type": "string"
+                        }
+                    }
+                },
+                "ui": {
+                    "type": "object",
+                    "properties": {
+                        "backgroundImage": {
+                            "default": "/background.jpg",
+                            "type": "string"
+                        },
+                        "disableWarnings": {
+                            "default": false,
+                            "type": "boolean"
+                        },
+                        "forgotPasswordMessage": {
+                            "default": "You can change your password by changing the configuration.",
+                            "type": "string"
+                        },
+                        "title": {
+                            "default": "Tinyauth",
+                            "type": "string"
                         }
                     }
                 }
