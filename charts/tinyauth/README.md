@@ -58,6 +58,7 @@ The tiniest authentication and authorization server you have ever seen.
 | serviceAccount.automount | bool | `true` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
+| tinyauth.analytics.enabled | bool | `true` |  |
 | tinyauth.appUrl | string | `""` |  |
 | tinyauth.auth.ip.allow | string | `""` |  |
 | tinyauth.auth.ip.block | string | `""` |  |
@@ -69,9 +70,7 @@ The tiniest authentication and authorization server you have ever seen.
 | tinyauth.auth.trustedProxies | string | `""` |  |
 | tinyauth.auth.users | string | `""` |  |
 | tinyauth.auth.usersFile | string | `""` |  |
-| tinyauth.databasePath | string | `"/data/tinyauth.db"` |  |
-| tinyauth.disableAnalytics | bool | `false` |  |
-| tinyauth.disableResources | bool | `false` |  |
+| tinyauth.database.path | string | `"/data/tinyauth.db"` |  |
 | tinyauth.ldap.address | string | `""` |  |
 | tinyauth.ldap.authCert | string | `""` |  |
 | tinyauth.ldap.authKey | string | `""` |  |
@@ -116,14 +115,15 @@ The tiniest authentication and authorization server you have ever seen.
 | tinyauth.oidc.clients[0].trustedRedirectUris | string | `""` |  |
 | tinyauth.oidc.privateKeyPath | string | `""` |  |
 | tinyauth.oidc.publicKeyPath | string | `""` |  |
-| tinyauth.resourcesDir | string | `"/data/resources"` |  |
+| tinyauth.resources.enabled | bool | `true` |  |
+| tinyauth.resources.path | string | `"/data/resources"` |  |
 | tinyauth.server.address | string | `"0.0.0.0"` |  |
 | tinyauth.server.port | int | `3000` |  |
 | tinyauth.server.socketPath | string | `""` |  |
 | tinyauth.ui.backgroundImage | string | `"/background.jpg"` |  |
-| tinyauth.ui.disableWarnings | bool | `false` |  |
 | tinyauth.ui.forgotPasswordMessage | string | `"You can change your password by changing the configuration."` |  |
 | tinyauth.ui.title | string | `"Tinyauth"` |  |
+| tinyauth.ui.warningsEnabled | bool | `true` |  |
 | tolerations | list | `[]` |  |
 | volumeMounts | list | `[]` |  |
 | volumes | list | `[]` |  |

@@ -49,14 +49,20 @@ service:
 tinyauth:
   # The base URL where the app is hosted.
   appUrl: "" # @schema default: ""; required: true
-  # The directory where resources are stored.
-  resourcesDir: "/data/resources" # @schema default: "/data/resources"
-  # The path to the database file.
-  databasePath: "/data/tinyauth.db" # @schema default: "/data/tinyauth.db"
-  # Disable analytics.
-  disableAnalytics: false # @schema default: false
-  # Disable resources server.
-  disableResources: false # @schema default: false
+
+  # Resources config
+  resources:
+    path: "/data/resources" # @schema default: "/data/resources"
+    enabled: true # @schema default: true
+
+  # Database config
+  database:
+    path: "/data/tinyauth.db" # @schema default: "/data/tinyauth.db"
+
+  # Analytics config
+  analytics:
+    # Disable analytics.
+    enabled: true # @schema default: true
 
   # server config
   server:
@@ -142,7 +148,7 @@ tinyauth:
     # Path to the background image.
     backgroundImage: "/background.jpg" # @schema default: "/background.jpg"
     # Disable UI warnings.
-    disableWarnings: false # @schema default: false
+    warningsEnabled: true # @schema default: true
 
   # ldap config
   ldap:

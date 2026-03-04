@@ -50,21 +50,21 @@ spec:
             - name: TINYAUTH_APPURL
               value: {{ .Values.tinyauth.appUrl | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.resourcesDir }}
-            - name: TINYAUTH_RESOURCESDIR
-              value: {{ .Values.tinyauth.resourcesDir | quote }}
+            {{- if .Values.tinyauth.resources.path }}
+            - name: TINYAUTH_RESOURCES_PATH
+              value: {{ .Values.tinyauth.resources.path | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.databasePath }}
-            - name: TINYAUTH_DATABASEPATH
-              value: {{ .Values.tinyauth.databasePath | quote }}
+            {{- if .Values.tinyauth.database.path }}
+            - name: TINYAUTH_DATABASE_PATH
+              value: {{ .Values.tinyauth.database.path | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.disableAnalytics }}
-            - name: TINYAUTH_DISABLEANALYTICS
-              value: {{ .Values.tinyauth.disableAnalytics | quote }}
+            {{- if .Values.tinyauth.analytics.enabled }}
+            - name: TINYAUTH_ANALYTICS_ENABLED
+              value: {{ .Values.tinyauth.analytics.enabled | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.disableResources }}
-            - name: TINYAUTH_DISABLERESOURCES
-              value: {{ .Values.tinyauth.disableResources | quote }}
+            {{- if .Values.tinyauth.resources.enabled }}
+            - name: TINYAUTH_RESOURCES_ENABLED
+              value: {{ .Values.tinyauth.resources.enabled | quote }}
             {{- end }}
             # server config
             {{- if .Values.tinyauth.server.port }}
@@ -231,9 +231,9 @@ spec:
             - name: TINYAUTH_UI_BACKGROUNDIMAGE
               value: {{ .Values.tinyauth.ui.backgroundImage | quote }}
             {{- end }}
-            {{- if .Values.tinyauth.ui.disableWarnings }}
-            - name: TINYAUTH_UI_DISABLEWARNINGS
-              value: {{ .Values.tinyauth.ui.disableWarnings | quote }}
+            {{- if .Values.tinyauth.ui.warningsEnabled }}
+            - name: TINYAUTH_UI_WARNINGSENABLED
+              value: {{ .Values.tinyauth.ui.warningsEnabled | quote }}
             {{- end }}
             # ldap config
             {{- if .Values.tinyauth.ldap.address }}

@@ -340,6 +340,15 @@
                 "appUrl"
             ],
             "properties": {
+                "analytics": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "default": true,
+                            "type": "boolean"
+                        }
+                    }
+                },
                 "appUrl": {
                     "default": "",
                     "type": "string"
@@ -394,17 +403,14 @@
                         }
                     }
                 },
-                "databasePath": {
-                    "default": "/data/tinyauth.db",
-                    "type": "string"
-                },
-                "disableAnalytics": {
-                    "default": false,
-                    "type": "boolean"
-                },
-                "disableResources": {
-                    "default": false,
-                    "type": "boolean"
+                "database": {
+                    "type": "object",
+                    "properties": {
+                        "path": {
+                            "default": "/data/tinyauth.db",
+                            "type": "string"
+                        }
+                    }
                 },
                 "ldap": {
                     "type": "object",
@@ -655,9 +661,18 @@
                         }
                     }
                 },
-                "resourcesDir": {
-                    "default": "/data/resources",
-                    "type": "string"
+                "resources": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "default": true,
+                            "type": "boolean"
+                        },
+                        "path": {
+                            "default": "/data/resources",
+                            "type": "string"
+                        }
+                    }
                 },
                 "server": {
                     "type": "object",
@@ -683,10 +698,6 @@
                             "default": "/background.jpg",
                             "type": "string"
                         },
-                        "disableWarnings": {
-                            "default": false,
-                            "type": "boolean"
-                        },
                         "forgotPasswordMessage": {
                             "default": "You can change your password by changing the configuration.",
                             "type": "string"
@@ -694,6 +705,10 @@
                         "title": {
                             "default": "Tinyauth",
                             "type": "string"
+                        },
+                        "warningsEnabled": {
+                            "default": true,
+                            "type": "boolean"
                         }
                     }
                 }
