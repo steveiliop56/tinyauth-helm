@@ -267,10 +267,10 @@ httpRoute:
     - name: my-gateway
   hostnames: # @schema default: ["chart-example.local"]
     - chart-example.local
-  rules: # @schema default: [{"matches": [{"path": {"type": "Prefix", "value": "/"}}]}]
+  rules: # @schema default: [{"matches": [{"path": {"type": "PathPrefix", "value": "/"}}]}]
     - matches:
         - path:
-            type: Prefix
+            type: PathPrefix
             value: /
 
 # Additional environment variables for the container
