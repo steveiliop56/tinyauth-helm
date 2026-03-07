@@ -1,6 +1,6 @@
 # tinyauth
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v5.0.1](https://img.shields.io/badge/AppVersion-v5.0.1-informational?style=flat-square)
+![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v5.0.1](https://img.shields.io/badge/AppVersion-v5.0.1-informational?style=flat-square)
 
 The tiniest authentication and authorization server you have ever seen.
 
@@ -21,7 +21,7 @@ The tiniest authentication and authorization server you have ever seen.
 | httpRoute.enabled | bool | `false` |  |
 | httpRoute.hostnames[0] | string | `"chart-example.local"` |  |
 | httpRoute.parentRefs[0].name | string | `"my-gateway"` |  |
-| httpRoute.rules[0].matches[0].path.type | string | `"Prefix"` |  |
+| httpRoute.rules[0].matches[0].path.type | string | `"PathPrefix"` |  |
 | httpRoute.rules[0].matches[0].path.value | string | `"/"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"ghcr.io/steveiliop56/tinyauth"` |  |
