@@ -2,6 +2,17 @@ apiVersion: v1
 entries:
   tinyauth:
   - apiVersion: v2
+    appVersion: v5.0.5
+    created: "2026-04-01T15:50:41.626100865Z"
+    description: The tiniest authentication and authorization server you have ever
+      seen.
+    digest: 35174fe5c2a7224ecaa55713e124d0eadc66861a0f92bca8e004b21113a8783a
+    name: tinyauth
+    type: application
+    urls:
+    - https://github.com/steveiliop56/tinyauth-helm/releases/download/tinyauth-2.0.6/tinyauth-2.0.6.tgz
+    version: 2.0.6
+  - apiVersion: v2
     appVersion: v5.0.4
     created: "2026-03-12T17:33:27.323956282Z"
     description: The tiniest authentication and authorization server you have ever
@@ -117,4 +128,4 @@ entries:
     urls:
     - https://github.com/steveiliop56/tinyauth-helm/releases/download/tinyauth-0.1.0/tinyauth-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-12T17:33:27.323997931Z"
+generated: "2026-04-01T15:50:41.626143184Z"
